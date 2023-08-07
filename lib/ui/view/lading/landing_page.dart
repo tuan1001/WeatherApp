@@ -8,6 +8,7 @@ import 'package:onboarding_concept/bloc/weather/weather_bloc.dart';
 import 'package:onboarding_concept/bloc/weather/weather_state.dart';
 import 'package:onboarding_concept/ui/utils/colors/color.dart';
 import 'package:onboarding_concept/ui/utils/layout/landing_layout.dart';
+import 'package:onboarding_concept/ui/utils/widgets/containers/container_weather.dart';
 import 'package:onboarding_concept/ui/utils/widgets/texts/text.dart';
 import 'package:onboarding_concept/ui/utils/widgets/texts/type_text.dart';
 
@@ -52,15 +53,16 @@ class _LandingPageState extends State<LandingPage> {
             ));
             return Future.value();
           },
-          expandedHeight: MediaQuery.of(context).size.height / 2.5,
+          expandedHeight: MediaQuery.of(context).size.height / 3,
           flexibleSpaceBar: FlexibleSpaceBar(
             background: Container(
-              decoration: BoxDecoration(color: themeColor
-                  // image: DecorationImage(
-                  //   image: AssetImage('lib/ui/utils/assets/images/logo.jpg'),
-                  //   fit: BoxFit.cover,
-                  // ),
-                  ),
+              decoration:
+                  BoxDecoration(color: themeColor, borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(30))
+                      // image: DecorationImage(
+                      //   image: AssetImage('lib/ui/utils/assets/images/logo.jpg'),
+                      //   fit: BoxFit.cover,
+                      // ),
+                      ),
               child: Column(
                 children: [
                   const SizedBox(height: 50),
@@ -81,10 +83,18 @@ class _LandingPageState extends State<LandingPage> {
                       )
                     ],
                   ).paddingAll(10),
-                  TextCus(
-                    title: '${state.weather.current.tempC}°',
-                    customSize: 50,
-                    color: Colors.white,
+                  Row(
+                    children: [
+                      TextCus(
+                        title: '${state.weather.current.tempC}°',
+                        customSize: 50,
+                        color: Colors.white,
+                      ),
+                      TextCus(
+                        title: '${state.weather.current.condition!.text}°',
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -101,7 +111,16 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ),
           ),
-          body: Column(),
+          body: Column(
+            children: [
+              Wrap(children: [
+                ContainerWeather(),
+                ContainerWeather(),
+                ContainerWeather(),
+                ContainerWeather(),
+              ])
+            ],
+          ),
         );
       },
     );

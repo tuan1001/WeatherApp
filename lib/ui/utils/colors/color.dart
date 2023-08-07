@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 const themeColor = Color.fromRGBO(225, 211, 250, 1);
 const secondaryColor = Color.fromRGBO(138, 32, 213, 1);
+const thirdColor = Color.fromRGBO(235, 222, 255, 1);
 
 const themeHeaderColor = Color.fromRGBO(20, 108, 148, 1);
 const themeBorderColor = Color.fromRGBO(68, 88, 219, 0.5);

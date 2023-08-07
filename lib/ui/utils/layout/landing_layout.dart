@@ -47,6 +47,7 @@ class MainSliverLayout extends StatelessWidget {
                         handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                         sliver: SliverAppBar(
                           title: Text(title.toUpperCase()),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
                           centerTitle: true,
                           pinned: true,
                           expandedHeight: expandedHeight ?? 120,
