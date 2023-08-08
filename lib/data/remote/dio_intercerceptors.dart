@@ -7,20 +7,20 @@ import 'package:onboarding_concept/ui/utils/helpers/logger.dart';
 class CustomInterceptors extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    logDev.d("REQUEST[${options.method}] => PATH: ${ApiEndPoints.baseUrl}${options.path}\nDATA: ${options.data}\nPARAM: ${options.queryParameters}");
+    logDev.f("REQUEST[${options.method}] => PATH: ${ApiEndPoints.baseUrl}${options.path}\nDATA: ${options.data}\nPARAM: ${options.queryParameters}");
     return super.onRequest(options, handler); //continue
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logDev.d("RESPONSE[${response.statusCode}] => PATH: ${response.realUri.path}\nDATA: ${response.data}");
+    logDev.f("RESPONSE[${response.statusCode}] => PATH: ${response.realUri.path}\nDATA: ${response.data}");
 
     return super.onResponse(response, handler);
   }
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    logDev.d("ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}]\nDATA: ${err.response?.data}");
+    logDev.f("ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}]\nDATA: ${err.response?.data}");
     return super.onError(err, handler);
   }
 }

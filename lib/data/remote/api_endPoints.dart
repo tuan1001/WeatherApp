@@ -3,7 +3,7 @@
 mixin ApiEndPoints {
   //ApiEndPoints._();
 
-  static const String baseUrl = 'http://api.weatherapi.com/v1/current.json';
+  static const String baseUrl = 'http://api.weatherapi.com/v1';
   static const String key = '2ab990aad60a42689fb71643230608';
 
   static const int receiveTimeout = 30000;
@@ -16,5 +16,6 @@ mixin ApiEndPoints {
   static const String authorization = 'Authorization';
 
   //auth
-  static const String login = '/api/login';
+  static const String getCurrent = '/current.json';
+  static const String getForecast = '/forecast.json';
 }

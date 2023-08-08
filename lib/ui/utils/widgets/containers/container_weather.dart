@@ -1,28 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:onboarding_concept/ui/utils/colors/color.dart';
 import 'package:onboarding_concept/ui/utils/widgets/texts/text.dart';
+import 'package:onboarding_concept/ui/utils/widgets/texts/type_text.dart';
 
 class ContainerWeather extends StatelessWidget {
-  const ContainerWeather({Key? key}) : super(key: key);
+  final String title;
+  final String data;
+  final IconData icon;
+  final double? width;
+  final Widget? body;
+  const ContainerWeather({Key? key, required this.title, required this.data, required this.icon, this.width, this.body}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2.5,
+      width: width ?? MediaQuery.of(context).size.width / 2.5,
       margin: EdgeInsets.all(8),
       decoration: BoxDecoration(color: thirdColor, borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Center(child: Icon(Ionicons.cloudy_night_outline).paddingAll(3))),
-          Column(
-            children: [TextCus(title: 'Wind speed'), TextCus(title: '12km/h')],
-          )
+          Row(
+            children: [
+              Container(
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Center(
+                      child: Icon(
+                    icon,
+                    size: 13,
+                  ).paddingAll(3))),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextCus(
+                    title: title,
+                    typeWeight: TextCusType.header,
+                  ),
+                  data == '' ? Container() : TextCus(title: data)
+                ],
+              ).paddingOnly(left: 10),
+            ],
+          ).paddingAll(10),
+          body ?? Container()
         ],
-      ).paddingAll(10),
+      ),
     );
   }
 }

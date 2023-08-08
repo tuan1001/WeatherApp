@@ -18,7 +18,12 @@ class WeatherState extends Equatable {
     required this.weather,
   });
   WeatherState.initial()
-      : this(status: WeatherStatus.initial, weather: Weather(current: Current(), location: Location()), message: '', error: '', token: '');
+      : this(
+            status: WeatherStatus.initial,
+            weather: Weather(current: Current(condition: Condition()), location: Location(), forecast: Forecast(forecastday: [])),
+            message: '',
+            error: '',
+            token: '');
   WeatherState copyWith({
     WeatherStatus? status,
     String? message,

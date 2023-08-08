@@ -10,3 +10,15 @@ class GetWeather extends WeatherEvent {
     required this.q,
   });
 }
+
+class GetForecast extends WeatherEvent {
+  final dynamic q;
+  final dynamic day;
+  final dynamic hour;
+
+  GetForecast({
+    required this.q,
+    required this.day,
+    required this.hour,
+  });
+}

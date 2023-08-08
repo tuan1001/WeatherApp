@@ -12,11 +12,27 @@ part 'weather_event.dart';
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   WeatherBloc() : super(WeatherState.initial()) {
     on<GetWeather>(_getWeather);
+    on<GetForecast>(_getForecast);
   }
   FutureOr<void> _getWeather(GetWeather event, Emitter<WeatherState> emit) async {
     emit(state.copyWith(status: WeatherStatus.loading));
     final res = await injector<WeatherRepository>().getWeather(
       event.q,
+    );
+    if (res != {}) {
+      emit(state.copyWith(status: WeatherStatus.getSuccess, weather: res));
+      return;
+    } else {
+      emit(state.copyWith(status: WeatherStatus.error, error: 'Data not found'));
+    }
+  }
+
+  FutureOr<void> _getForecast(GetForecast event, Emitter<WeatherState> emit) async {
+    emit(state.copyWith(status: WeatherStatus.loading));
+    final res = await injector<WeatherRepository>().getForecast(
+      event.q,
+      event.day,
+      event.hour,
     );
     if (res != {}) {
       emit(state.copyWith(status: WeatherStatus.getSuccess, weather: res));

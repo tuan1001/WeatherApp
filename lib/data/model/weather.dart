@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final weather = weatherFromJson(jsonString);
-
 import 'dart:convert';
 
 Weather weatherFromJson(String str) => Weather.fromJson(json.decode(str));
@@ -9,15 +5,18 @@ Weather weatherFromJson(String str) => Weather.fromJson(json.decode(str));
 class Weather {
   Location location;
   Current current;
+  Forecast forecast;
 
   Weather({
     required this.location,
     required this.current,
+    required this.forecast,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         location: Location.fromJson((json["location"] ?? {})),
         current: Current.fromJson(json["current"] ?? {}),
+        forecast: Forecast.fromJson(json["forecast"] ?? {}),
       );
 }
 
@@ -45,6 +44,11 @@ class Current {
   double? uv;
   double? gustMph;
   double? gustKph;
+  double? willItRain;
+  int? chanceOfRain;
+  double? willItSnow;
+  int? chanceOfSnow;
+  String? time;
 
   Current({
     this.lastUpdatedEpoch,
@@ -52,7 +56,7 @@ class Current {
     this.tempC,
     this.tempF,
     this.isDay,
-    this.condition,
+    required this.condition,
     this.windMph,
     this.windKph,
     this.windDegree,
@@ -70,6 +74,11 @@ class Current {
     this.uv,
     this.gustMph,
     this.gustKph,
+    this.willItRain,
+    this.chanceOfRain,
+    this.willItSnow,
+    this.chanceOfSnow,
+    this.time,
   });
 
   factory Current.fromJson(Map<String, dynamic> json) => Current(
@@ -78,7 +87,7 @@ class Current {
         tempC: json["temp_c"],
         tempF: json["temp_f"],
         isDay: json["is_day"],
-        condition: Condition.fromJson(json["condition"]),
+        condition: Condition.fromJson(json["condition"] ?? {}),
         windMph: json["wind_mph"].toDouble(),
         windKph: json["wind_kph"].toDouble(),
         windDegree: json["wind_degree"],
@@ -96,6 +105,11 @@ class Current {
         uv: json["uv"],
         gustMph: json["gust_mph"],
         gustKph: json["gust_kph"].toDouble(),
+        willItRain: json["will_it_rain"],
+        chanceOfRain: json["chance_of_rain"],
+        willItSnow: json["will_it_snow"],
+        chanceOfSnow: json["chance_of_snow"],
+        time: json["time"],
       );
 }
 
@@ -147,5 +161,143 @@ class Location {
         tzId: json["tz_id"],
         localtimeEpoch: json["localtime_epoch"],
         localtime: json["localtime"],
+      );
+}
+
+class Forecast {
+  List<Forecastday> forecastday;
+
+  Forecast({
+    required this.forecastday,
+  });
+
+  factory Forecast.fromJson(Map<String, dynamic> json) => Forecast(
+        forecastday: List<Forecastday>.from((json["forecastday"] ?? []).map((x) => Forecastday.fromJson(x))),
+      );
+}
+
+class Forecastday {
+  String? date;
+  int? dateEpoch;
+  Day? day;
+  Astro? astro;
+  List<Current>? hour;
+
+  Forecastday({
+    this.date,
+    this.dateEpoch,
+    this.day,
+    this.astro,
+    this.hour,
+  });
+
+  factory Forecastday.fromJson(Map<String, dynamic> json) => Forecastday(
+        date: json["date"] ?? '',
+        dateEpoch: json["date_epoch"] ?? '',
+        day: Day.fromJson(json["day"] ?? {}),
+        astro: Astro.fromJson(json["astro"] ?? {}),
+        hour: List<Current>.from((json["hour"] ?? []).map((x) => Current.fromJson(x))),
+      );
+}
+
+class Astro {
+  String? sunrise;
+  String? sunset;
+  String? moonrise;
+  String? moonset;
+  String? moonPhase;
+  String? moonIllumination;
+  int? isMoonUp;
+  int? isSunUp;
+
+  Astro({
+    this.sunrise,
+    this.sunset,
+    this.moonrise,
+    this.moonset,
+    this.moonPhase,
+    this.moonIllumination,
+    this.isMoonUp,
+    this.isSunUp,
+  });
+
+  factory Astro.fromJson(Map<String, dynamic> json) => Astro(
+        sunrise: json["sunrise"],
+        sunset: json["sunset"],
+        moonrise: json["moonrise"],
+        moonset: json["moonset"],
+        moonPhase: json["moon_phase"],
+        moonIllumination: json["moon_illumination"],
+        isMoonUp: json["is_moon_up"],
+        isSunUp: json["is_sun_up"],
+      );
+}
+
+class Day {
+  double? maxtempC;
+  double? maxtempF;
+  double? mintempC;
+  double? mintempF;
+  double? avgtempC;
+  double? avgtempF;
+  double? maxwindMph;
+  double? maxwindKph;
+  double? totalprecipMm;
+  double? totalprecipIn;
+  int? totalsnowCm;
+  double? avgvisKm;
+  int? avgvisMiles;
+  int? avghumidity;
+  int? dailyWillItRain;
+  int? dailyChanceOfRain;
+  int? dailyWillItSnow;
+  int? dailyChanceOfSnow;
+  Condition? condition;
+  int? uv;
+
+  Day({
+    this.maxtempC,
+    this.maxtempF,
+    this.mintempC,
+    this.mintempF,
+    this.avgtempC,
+    this.avgtempF,
+    this.maxwindMph,
+    this.maxwindKph,
+    this.totalprecipMm,
+    this.totalprecipIn,
+    this.totalsnowCm,
+    this.avgvisKm,
+    this.avgvisMiles,
+    this.avghumidity,
+    this.dailyWillItRain,
+    this.dailyChanceOfRain,
+    this.dailyWillItSnow,
+    this.dailyChanceOfSnow,
+    this.condition,
+    this.uv,
+  });
+
+  factory Day.fromJson(Map<String, dynamic> json) => Day(
+        maxtempC: json["maxtemp_c"].toDouble(),
+        maxtempF: json["maxtemp_f"].toDouble(),
+        mintempC: json["mintemp_c"].toDouble(),
+        mintempF: json["mintemp_f"].toDouble(),
+        avgtempC: json["avgtemp_c"].toDouble(),
+        avgtempF: json["avgtemp_f"].toDouble(),
+        maxwindMph: json["maxwind_mph"].toDouble(),
+        maxwindKph: json["maxwind_kph"].toDouble(),
+        totalprecipMm: json["totalprecip_mm"].toDouble(),
+        totalprecipIn: json["totalprecip_in"].toDouble(),
+        totalsnowCm: json["totalsnow_cm"],
+        avgvisKm: json["avgvis_km"].toDouble(),
+        avgvisMiles: json["avgvis_miles"],
+        avghumidity: json["avghumidity"],
+        dailyWillItRain: json["daily_will_it_rain"],
+        dailyChanceOfRain: json["daily_chance_of_rain"],
+        dailyWillItSnow: json["daily_will_it_snow"],
+        dailyChanceOfSnow: json["daily_chance_of_snow"],
+        condition: Condition.fromJson(json["condition"]),
+        uv: json["uv"],
       );
 }
