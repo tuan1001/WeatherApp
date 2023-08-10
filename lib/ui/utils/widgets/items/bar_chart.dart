@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:onboarding_concept/data/model/weather.dart';
 import 'package:onboarding_concept/ui/utils/colors/color.dart';
 
 class BarChartSample1 extends StatefulWidget {
-  BarChartSample1({Key? key});
+  final List<Forecastday> data;
+  BarChartSample1({Key? key, required this.data});
 
   List<Color> get availableColors => const <Color>[
         AppColors.contentColorPurple,
@@ -25,6 +28,14 @@ class BarChartSample1 extends StatefulWidget {
 }
 
 class BarChartSample1State extends State<BarChartSample1> {
+  @override
+  void initState() {
+    List.generate(widget.data.length, (index) => index).forEach((index) {
+      print('aaa ${widget.data[index].day!.dailyChanceOfRain}');
+    });
+    super.initState();
+  }
+
   final Duration animDuration = const Duration(milliseconds: 250);
 
   int touchedIndex = -1;
@@ -90,22 +101,18 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
+  List<BarChartGroupData> showingGroups() => List.generate(4, (i) {
+        //print('aaabb ${widget.data.map((e) => e.hour)}');
         switch (i) {
           case 0:
             return makeGroupData(0, 5, isTouched: i == touchedIndex);
           case 1:
-            return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
+            return makeGroupData(0, 6.5, isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, 5, isTouched: i == touchedIndex);
+            return makeGroupData(0, 5, isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
-          case 4:
-            return makeGroupData(4, 9, isTouched: i == touchedIndex);
-          case 5:
-            return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
-          case 6:
-            return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
+            return makeGroupData(0, 7, isTouched: i == touchedIndex);
+
           default:
             return throw Error();
         }
@@ -113,95 +120,87 @@ class BarChartSample1State extends State<BarChartSample1> {
 
   BarChartData mainBarData() {
     return BarChartData(
-      barTouchData: BarTouchData(
-        touchTooltipData: BarTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey,
-          tooltipHorizontalAlignment: FLHorizontalAlignment.right,
-          tooltipMargin: -10,
-          getTooltipItem: (group, groupIndex, rod, rodIndex) {
-            String weekDay;
-            switch (group.x) {
-              case 0:
-                weekDay = 'Monday';
-                break;
-              case 1:
-                weekDay = 'Tuesday';
-                break;
-              case 2:
-                weekDay = 'Wednesday';
-                break;
-              case 3:
-                weekDay = 'Thursday';
-                break;
-              case 4:
-                weekDay = 'Friday';
-                break;
-              case 5:
-                weekDay = 'Saturday';
-                break;
-              case 6:
-                weekDay = 'Sunday';
-                break;
-              default:
-                throw Error();
-            }
-            return BarTooltipItem(
-              '$weekDay\n',
-              const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: (rod.toY - 1).toString(),
-                  style: TextStyle(
-                    color: widget.touchedBarColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+        barTouchData: BarTouchData(
+          touchTooltipData: BarTouchTooltipData(
+            tooltipBgColor: Colors.blueGrey,
+            tooltipHorizontalAlignment: FLHorizontalAlignment.right,
+            tooltipMargin: -10,
+            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+              String weekDay;
+              switch (group.x) {
+                case 0:
+                  weekDay = 'Monday';
+                  break;
+                case 1:
+                  weekDay = 'Tuesday';
+                  break;
+                case 2:
+                  weekDay = 'Wednesday';
+                  break;
+                case 3:
+                  weekDay = 'Thursday';
+                  break;
+
+                default:
+                  throw Error();
+              }
+              return BarTooltipItem(
+                '$weekDay\n',
+                const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-              ],
-            );
+                children: <TextSpan>[
+                  TextSpan(
+                    text: (rod.toY - 1).toString(),
+                    style: TextStyle(
+                      color: widget.touchedBarColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          touchCallback: (FlTouchEvent event, barTouchResponse) {
+            setState(() {
+              if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {
+                touchedIndex = -1;
+                return;
+              }
+              touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
+            });
           },
         ),
-        touchCallback: (FlTouchEvent event, barTouchResponse) {
-          setState(() {
-            if (!event.isInterestedForInteractions || barTouchResponse == null || barTouchResponse.spot == null) {
-              touchedIndex = -1;
-              return;
-            }
-            touchedIndex = barTouchResponse.spot!.touchedBarGroupIndex;
-          });
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: true),
-        ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: getTitles,
-            reservedSize: 38,
+        titlesData: FlTitlesData(
+          show: true,
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: true),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: getTitles,
+              reservedSize: 38,
+            ),
+          ),
+          leftTitles: const AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: false,
+            ),
           ),
         ),
-        leftTitles: const AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-          ),
+        borderData: FlBorderData(
+          show: false,
         ),
-      ),
-      borderData: FlBorderData(
-        show: false,
-      ),
-      barGroups: showingGroups(),
-      gridData: const FlGridData(show: false),
-    );
+        barGroups: showingGroups(),
+        gridData: const FlGridData(show: false),
+        maxY: 100);
   }
 
   Widget getTitles(double value, TitleMeta meta) {
@@ -213,26 +212,18 @@ class BarChartSample1State extends State<BarChartSample1> {
     Widget text;
     switch (value.toInt()) {
       case 0:
-        text = const Text('0 AM', style: style);
+        text = Text('${int.parse(DateFormat('HH').format(DateTime.now()))}', style: style);
         break;
       case 1:
-        text = const Text('4 AM', style: style);
+        text = Text('${int.parse(DateFormat('HH').format(DateTime.now())) + 1}', style: style);
         break;
       case 2:
-        text = const Text('8 AM', style: style);
+        text = Text('${int.parse(DateFormat('HH').format(DateTime.now())) + 2}', style: style);
         break;
       case 3:
-        text = const Text('12 AM', style: style);
+        text = Text('${int.parse(DateFormat('HH').format(DateTime.now())) + 3}', style: style);
         break;
-      case 4:
-        text = const Text('4 PM', style: style);
-        break;
-      case 5:
-        text = const Text('8 PM', style: style);
-        break;
-      case 6:
-        text = const Text('12 PM', style: style);
-        break;
+
       default:
         text = const Text('', style: style);
         break;
@@ -288,36 +279,6 @@ class BarChartSample1State extends State<BarChartSample1> {
           barRods: [
             BarChartRodData(
               toY: 15,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 10,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 16,
               gradient: _barsGradient,
             )
           ],

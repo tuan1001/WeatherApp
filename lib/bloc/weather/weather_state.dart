@@ -20,7 +20,7 @@ class WeatherState extends Equatable {
   WeatherState.initial()
       : this(
             status: WeatherStatus.initial,
-            weather: Weather(current: Current(condition: Condition()), location: Location(), forecast: Forecast(forecastday: [])),
+            weather: Weather(current: Current(condition: Condition()), location: Location(), forecast: Forecast(forecastday: []), error: Error()),
             message: '',
             error: '',
             token: '');

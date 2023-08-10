@@ -3,7 +3,7 @@ import 'package:onboarding_concept/data/remote/api_endPoints.dart';
 import 'package:retrofit/retrofit.dart';
 part 'weather_api.g.dart';
 
-@RestApi()
+@RestApi(baseUrl: ApiEndPoints.baseUrl)
 abstract class RestClient {
   factory RestClient(Dio dio) = _RestClient;
   @GET(ApiEndPoints.getCurrent)

@@ -19,11 +19,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     final res = await injector<WeatherRepository>().getWeather(
       event.q,
     );
-    if (res != {}) {
+    if (res.error != {}) {
+      print('object');
       emit(state.copyWith(status: WeatherStatus.getSuccess, weather: res));
-      return;
     } else {
-      emit(state.copyWith(status: WeatherStatus.error, error: 'Data not found'));
+      emit(state.copyWith(status: WeatherStatus.error, error: res.error.message));
     }
   }
 
@@ -34,11 +34,14 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       event.day,
       event.hour,
     );
-    if (res != {}) {
+    if (res.error.message == null) {
+      print('object');
+      print(res.error.message);
       emit(state.copyWith(status: WeatherStatus.getSuccess, weather: res));
-      return;
     } else {
-      emit(state.copyWith(status: WeatherStatus.error, error: 'Data not found'));
+      print('object1');
+      print(res.error.toString());
+      emit(state.copyWith(status: WeatherStatus.error, error: res.error.message));
     }
   }
 }

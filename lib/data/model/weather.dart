@@ -6,17 +6,20 @@ class Weather {
   Location location;
   Current current;
   Forecast forecast;
+  Error error;
 
   Weather({
     required this.location,
     required this.current,
     required this.forecast,
+    required this.error,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         location: Location.fromJson((json["location"] ?? {})),
         current: Current.fromJson(json["current"] ?? {}),
         forecast: Forecast.fromJson(json["forecast"] ?? {}),
+        error: Error.fromJson(json["error"] ?? {}),
       );
 }
 
@@ -88,23 +91,23 @@ class Current {
         tempF: json["temp_f"],
         isDay: json["is_day"],
         condition: Condition.fromJson(json["condition"] ?? {}),
-        windMph: json["wind_mph"].toDouble(),
-        windKph: json["wind_kph"].toDouble(),
+        windMph: json["wind_mph"],
+        windKph: json["wind_kph"],
         windDegree: json["wind_degree"],
         windDir: json["wind_dir"],
         pressureMb: json["pressure_mb"],
-        pressureIn: json["pressure_in"].toDouble(),
+        pressureIn: json["pressure_in"],
         precipMm: json["precip_mm"],
         precipIn: json["precip_in"],
         humidity: json["humidity"],
         cloud: json["cloud"],
-        feelslikeC: json["feelslike_c"].toDouble(),
+        feelslikeC: json["feelslike_c"],
         feelslikeF: json["feelslike_f"],
         visKm: json["vis_km"],
         visMiles: json["vis_miles"],
         uv: json["uv"],
         gustMph: json["gust_mph"],
-        gustKph: json["gust_kph"].toDouble(),
+        gustKph: json["gust_kph"],
         willItRain: json["will_it_rain"],
         chanceOfRain: json["chance_of_rain"],
         willItSnow: json["will_it_snow"],
@@ -156,8 +159,8 @@ class Location {
         name: json["name"] ?? '',
         region: json["region"],
         country: json["country"],
-        lat: json["lat"].toDouble(),
-        lon: json["lon"].toDouble(),
+        lat: json["lat"],
+        lon: json["lon"],
         tzId: json["tz_id"],
         localtimeEpoch: json["localtime_epoch"],
         localtime: json["localtime"],
@@ -279,18 +282,18 @@ class Day {
   });
 
   factory Day.fromJson(Map<String, dynamic> json) => Day(
-        maxtempC: json["maxtemp_c"].toDouble(),
-        maxtempF: json["maxtemp_f"].toDouble(),
-        mintempC: json["mintemp_c"].toDouble(),
-        mintempF: json["mintemp_f"].toDouble(),
-        avgtempC: json["avgtemp_c"].toDouble(),
-        avgtempF: json["avgtemp_f"].toDouble(),
-        maxwindMph: json["maxwind_mph"].toDouble(),
-        maxwindKph: json["maxwind_kph"].toDouble(),
-        totalprecipMm: json["totalprecip_mm"].toDouble(),
-        totalprecipIn: json["totalprecip_in"].toDouble(),
+        maxtempC: json["maxtemp_c"],
+        maxtempF: json["maxtemp_f"],
+        mintempC: json["mintemp_c"],
+        mintempF: json["mintemp_f"],
+        avgtempC: json["avgtemp_c"],
+        avgtempF: json["avgtemp_f"],
+        maxwindMph: json["maxwind_mph"],
+        maxwindKph: json["maxwind_kph"],
+        totalprecipMm: json["totalprecip_mm"],
+        totalprecipIn: json["totalprecip_in"],
         totalsnowCm: json["totalsnow_cm"],
-        avgvisKm: json["avgvis_km"].toDouble(),
+        avgvisKm: json["avgvis_km"],
         avgvisMiles: json["avgvis_miles"],
         avghumidity: json["avghumidity"],
         dailyWillItRain: json["daily_will_it_rain"],
@@ -299,5 +302,20 @@ class Day {
         dailyChanceOfSnow: json["daily_chance_of_snow"],
         condition: Condition.fromJson(json["condition"]),
         uv: json["uv"],
+      );
+}
+
+class Error {
+  int? code;
+  String? message;
+
+  Error({
+    this.code,
+    this.message,
+  });
+
+  factory Error.fromJson(Map<String, dynamic> json) => Error(
+        code: json["code"],
+        message: json["message"],
       );
 }
