@@ -5,19 +5,60 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:onboarding_concept/bloc/weather/weather_bloc.dart';
 import 'package:onboarding_concept/bloc/weather/weather_state.dart';
+import 'package:onboarding_concept/data/model/weather.dart';
 import 'package:onboarding_concept/ui/utils/widgets/containers/container_weather.dart';
 import 'package:onboarding_concept/ui/utils/widgets/items/bar_chart.dart';
 import 'package:onboarding_concept/ui/utils/widgets/items/line_chart.dart';
 import 'package:onboarding_concept/ui/utils/widgets/texts/text.dart';
 import 'package:onboarding_concept/ui/utils/widgets/texts/type_text.dart';
 
-class TodayPage extends StatelessWidget {
+class TodayPage extends StatefulWidget {
   const TodayPage({Key? key}) : super(key: key);
+
+  @override
+  State<TodayPage> createState() => _TodayPageState();
+}
+
+class _TodayPageState extends State<TodayPage> {
+  ScrollController _scrollController = ScrollController();
+
+  void scrollToCurrentTime(List<Current> forecastHours) {
+    // Get the current time
+    DateTime currentTime = DateTime.now();
+
+    // Find the index of the forecast hour that matches the current time
+    int index = forecastHours.indexWhere((hour) {
+      DateTime hourTime = DateTime.parse(hour.time!);
+      return currentTime.hour == hourTime.hour;
+    });
+    print(index);
+
+    if (index != -1) {
+      // Calculate the offset for the desired index
+      double offset = index * 46; // Adjust yourItemWidth as needed
+
+      // Animate the scroll to the calculated offset
+      _scrollController.animateTo(
+        offset,
+        duration: Duration(seconds: 1), // Adjust duration as needed
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Call scrollToCurrentTime with your forecast hours list
+          scrollToCurrentTime(state.weather.forecast.forecastday.expand((day) => day.hour!).toList());
+        });
         return Column(
           children: [
             Wrap(children: [
@@ -48,11 +89,12 @@ class TodayPage extends StatelessWidget {
             ]),
             ContainerWeather(
               title: 'Hourly forecast',
-              width: MediaQuery.of(context).size.width,
               data: '',
               icon: Ionicons.time_outline,
+              width: MediaQuery.of(context).size.width,
               body: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
+                controller: _scrollController,
                 child: Row(
                   children: [
                     for (var items1 in state.weather.forecast.forecastday)

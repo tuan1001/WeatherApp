@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:onboarding_concept/ui/utils/colors/color.dart';
 import 'package:onboarding_concept/ui/utils/widgets/loading/lazy_load.dart';
 
@@ -35,11 +36,11 @@ class TabbarSliverLayout extends StatefulWidget {
 
 class _TabbarSliverLayoutState extends State<TabbarSliverLayout> {
   TabBar get _tabBar => TabBar(
-      labelPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width) / (widget.tabs.length.toDouble() + 7),
+      labelPadding: EdgeInsets.symmetric(horizontal: 7),
       controller: widget.tabController,
       isScrollable: true,
-      indicatorColor: Colors.red,
-      labelColor: Colors.red,
+      indicatorColor: transparentColor,
+      labelColor: transparentColor,
       unselectedLabelColor: Colors.grey,
       tabs: widget.tabs);
   @override
@@ -70,8 +71,8 @@ class _TabbarSliverLayoutState extends State<TabbarSliverLayout> {
                       bottom: PreferredSize(
                         preferredSize: _tabBar.preferredSize,
                         child: Material(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                          color: themeColor,
+                          //borderRadius: const BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                           child: _tabBar,
                         ),
                       ),

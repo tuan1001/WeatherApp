@@ -31,7 +31,7 @@ class BarChartSample1State extends State<BarChartSample1> {
   @override
   void initState() {
     List.generate(widget.data.length, (index) => index).forEach((index) {
-      print('aaa ${widget.data[index].day!.dailyChanceOfRain}');
+      //print('aaa ${widget.data[index].day!.dailyChanceOfRain}');
     });
     super.initState();
   }
@@ -47,12 +47,12 @@ class BarChartSample1State extends State<BarChartSample1> {
     return AspectRatio(
       aspectRatio: 1,
       child: Stack(
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              children: [
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -101,22 +101,9 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(4, (i) {
-        //print('aaabb ${widget.data.map((e) => e.hour)}');
-        switch (i) {
-          case 0:
-            return makeGroupData(0, 5, isTouched: i == touchedIndex);
-          case 1:
-            return makeGroupData(0, 6.5, isTouched: i == touchedIndex);
-          case 2:
-            return makeGroupData(0, 5, isTouched: i == touchedIndex);
-          case 3:
-            return makeGroupData(0, 7, isTouched: i == touchedIndex);
-
-          default:
-            return throw Error();
-        }
-      });
+  BarChartGroupData showingGroups(int x, double percent) {
+    return makeGroupData(x, percent);
+  }
 
   BarChartData mainBarData() {
     return BarChartData(
@@ -198,9 +185,13 @@ class BarChartSample1State extends State<BarChartSample1> {
         borderData: FlBorderData(
           show: false,
         ),
-        barGroups: showingGroups(),
+        barGroups: [
+          showingGroups(0, 10),
+          showingGroups(0, 15),
+          showingGroups(0, 20),
+        ],
         gridData: const FlGridData(show: false),
-        maxY: 100);
+        maxY: 20);
   }
 
   Widget getTitles(double value, TitleMeta meta) {
@@ -223,7 +214,6 @@ class BarChartSample1State extends State<BarChartSample1> {
       case 3:
         text = Text('${int.parse(DateFormat('HH').format(DateTime.now())) + 3}', style: style);
         break;
-
       default:
         text = const Text('', style: style);
         break;

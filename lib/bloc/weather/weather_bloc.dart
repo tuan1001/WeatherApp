@@ -20,7 +20,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       event.q,
     );
     if (res.error != {}) {
-      print('object');
       emit(state.copyWith(status: WeatherStatus.getSuccess, weather: res));
     } else {
       emit(state.copyWith(status: WeatherStatus.error, error: res.error.message));
@@ -35,12 +34,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       event.hour,
     );
     if (res.error.message == null) {
-      print('object');
-      print(res.error.message);
       emit(state.copyWith(status: WeatherStatus.getSuccess, weather: res));
     } else {
-      print('object1');
-      print(res.error.toString());
       emit(state.copyWith(status: WeatherStatus.error, error: res.error.message));
     }
   }
