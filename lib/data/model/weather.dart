@@ -47,9 +47,9 @@ class Current {
   double? uv;
   double? gustMph;
   double? gustKph;
-  double? willItRain;
+  int? willItRain;
   int? chanceOfRain;
-  double? willItSnow;
+  int? willItSnow;
   int? chanceOfSnow;
   String? time;
 
@@ -247,16 +247,16 @@ class Day {
   double? maxwindKph;
   double? totalprecipMm;
   double? totalprecipIn;
-  int? totalsnowCm;
+  double? totalsnowCm;
   double? avgvisKm;
-  int? avgvisMiles;
-  int? avghumidity;
+  double? avgvisMiles;
+  double? avghumidity;
   int? dailyWillItRain;
   int? dailyChanceOfRain;
   int? dailyWillItSnow;
   int? dailyChanceOfSnow;
   Condition? condition;
-  int? uv;
+  double? uv;
 
   Day({
     this.maxtempC,
