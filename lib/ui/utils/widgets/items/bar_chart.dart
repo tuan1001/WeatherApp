@@ -186,6 +186,10 @@ class BarChartSample1State extends State<BarChartSample1> {
           show: false,
         ),
         barGroups: [
+          // for (var items in widget.data)
+          //   for (var items1 in items.hour!)
+          //     if (DateFormat('HH').format(DateTime.parse(items1.time!)) == DateFormat('HH').format(DateTime.now()))
+          //       showingGroups(0, items1.chanceOfRain!.toDouble()),
           showingGroups(0, 10),
           showingGroups(0, 15),
           showingGroups(0, 20),

@@ -110,6 +110,10 @@ class _TodayPageState extends State<TodayPage> {
                               //   title: DateFormat('HH').format(DateTime.parse(items2.time!)),
                               //   typeSize: TextCusType.subtitle,
                               // ),
+                              // TextCus(
+                              //   title: DateFormat('HH').format(DateTime.now()),
+                              //   typeSize: TextCusType.subtitle,
+                              // ),
                               Container(
                                 height: 35,
                                 width: 35,
